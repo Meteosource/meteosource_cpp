@@ -23,6 +23,7 @@ class Forecast
         std::unique_ptr<MinutelyData> minutely = nullptr;
         std::vector<std::unique_ptr<HourlyData> > hourly;
         std::vector<std::unique_ptr<DailyData> > daily;
+        std::vector<std::unique_ptr<Alert> > alerts;
 };
 
 

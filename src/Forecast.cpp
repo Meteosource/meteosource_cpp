@@ -63,6 +63,18 @@ Forecast::Forecast(Json::Value & data)
             }
         }
     }
+    if (data.isMember("alerts"))
+    {
+        if (data["alerts"].isMember("data"))
+        {
+            size_t sz = data["alerts"]["data"].size();
+            this->alerts.reserve(sz);
+            for (int i = 0; i < sz; ++i)
+            {
+                this->alerts.push_back(std::unique_ptr<Alert>(new Alert(data["alerts"]["data"][i])));
+            }
+        }
+    }
 }
 
 

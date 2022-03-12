@@ -508,3 +508,32 @@ void DailyData::print()
     std::cout << "astro: " << *this->astro << std::endl;
     std::cout << "statistics: " << *this->statistics << std::endl;
 }
+
+Alert::Alert(const Json::Value & data)
+{
+    this->event = data.get("event", "").asString();
+    this->onset = data.get("onset", "").asString();
+    this->expires = data.get("expires", "").asString();
+    this->sender = data.get("sender", "").asString();
+    this->certainty = data.get("certainty", "").asString();
+    this->severity = data.get("severity", "").asString();
+    this->headline = data.get("headline", "").asString();
+    this->description = data.get("description", "").asString();
+}
+
+std::ostream & operator<<(std::ostream &os, const Alert & d)
+{
+    return os << "<Alert valid from " << d.onset << " to " << d.expires << ">";
+}
+
+void Alert::print()
+{
+    std::cout << "event: " << this->event << std::endl;
+    std::cout << "onset: " << this->onset << std::endl;
+    std::cout << "expires: " << this->expires << std::endl;
+    std::cout << "sender: " << this->sender << std::endl;
+    std::cout << "certainty: " << this->certainty << std::endl;
+    std::cout << "severity: " << this->severity << std::endl;
+    std::cout << "headline: " << this->headline << std::endl;
+    std::cout << "description: " << this->description << std::endl;
+}

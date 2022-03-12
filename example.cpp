@@ -53,5 +53,13 @@ int main()
         std::cout << std::endl;
     }
 
+    if (res->alerts.size() > 0)
+    {
+        std::cout << "Active alerts:" << std::endl;
+        for (unsigned int i = 0; i < res->alerts.size(); ++i)
+            std::cout << "  Alert valid from " << res->alerts[i]->onset << " to " << res->alerts[i]->expires << ": " << res->alerts[i]->event << std::endl;
+        std::cout << std::endl;
+    }
+
     return 0;
 }

@@ -238,4 +238,21 @@ struct DailyData
     std::unique_ptr<StatisticsData> statistics;
 };
 
+struct Alert
+{
+    Alert(const Json::Value & data);
+    friend std::ostream & operator << (std::ostream & stream, const Alert & d);
+    void print();
+
+    std::string event = "";
+    std::string onset = "";
+    std::string expires = "";
+    std::string sender = "";
+    std::string certainty = "";
+    std::string severity = "";
+    std::string headline = "";
+    std::string description = "";
+};
+
+
 #endif //DATA_H
