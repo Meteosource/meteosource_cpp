@@ -2,7 +2,7 @@
 #define METEOSOURCE_H
 
 #include <string>
-#include <jsoncpp/json/json.h>
+#include <json/json.h>
 
 #include "RequestHandler.h"
 #include "Forecast.h"

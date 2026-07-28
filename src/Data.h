@@ -2,7 +2,7 @@
 #define DATA_H
 
 #include <math.h>
-#include <jsoncpp/json/json.h>
+#include <json/json.h>
 
 struct CurrentData
 {

@@ -1,13 +1,10 @@
 #include <iostream>
 #include <string>
 #include <sstream>
-#include <iostream>
 #include <curl/curl.h>
-#include <jsoncpp/json/json.h>
+#include <json/json.h>
 #include <cstdint>
-#include <iostream>
 #include <memory>
-#include <string>
 
 #include "RequestHandler.h"
 
@@ -55,9 +52,12 @@ Json::Value RequestHandler::execute_request(std::string url)
     curl_easy_getinfo (this->m_handle, CURLINFO_RESPONSE_CODE, &http_code);
 
     Json::Value jsonData;
-    Json::Reader jsonReader;
+    Json::CharReaderBuilder jsonReaderBuilder;
+    std::unique_ptr<Json::CharReader> jsonReader(jsonReaderBuilder.newCharReader());
+    std::string jsonErrors;
 
-    if (http_code == 200 && jsonReader.parse(*httpData.get(), jsonData))
+    if (http_code == 200 &&
+        jsonReader->parse(httpData->data(), httpData->data() + httpData->size(), &jsonData, &jsonErrors))
     {
         return jsonData;
     }

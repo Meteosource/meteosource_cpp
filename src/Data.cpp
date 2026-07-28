@@ -89,7 +89,7 @@ MinutelyData::MinutelyData(const Json::Value & data)
 {
     this->summary = data.get("summary", "").asString();
     this->data.reserve(data["data"].size());
-    for (int i = 0; i < data["data"].size(); ++i)
+    for (Json::ArrayIndex i = 0; i < data["data"].size(); ++i)
     {
         this->data.push_back(std::unique_ptr<MinuteData>(new MinuteData(data["data"][i])));
     }

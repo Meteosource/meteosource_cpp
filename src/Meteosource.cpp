@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
-#include <jsoncpp/json/json.h>
+#include <json/json.h>
 
 #include "Meteosource.h"
 #include "Forecast.h"

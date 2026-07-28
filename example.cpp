@@ -1,5 +1,5 @@
 #include <iostream>
-#include <jsoncpp/json/json.h>
+#include <json/json.h>
 #include <memory>
 
 #include "src/Meteosource.h"

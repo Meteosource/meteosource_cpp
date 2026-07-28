@@ -2,7 +2,7 @@
 #define FORECAST_H
 
 #include <memory>
-#include <jsoncpp/json/json.h>
+#include <json/json.h>
 #include "Data.h"
 
 class Forecast
