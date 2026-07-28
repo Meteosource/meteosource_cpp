@@ -81,5 +81,11 @@ std::unique_ptr<Forecast> Meteosource::get_point_forecast(const double lat,
                                                           const std::string language,
                                                           const std::string units)
 {
-    return std::unique_ptr<Forecast>(nullptr);
+    std::string url = build_url("point", lat, lon, sections, timezone, language, units);
+    Json::Value req_res = this->m_request_handler->execute_request(url);
+    if (!req_res)
+    {
+        return nullptr;
+    }
+    return std::unique_ptr<Forecast>(new Forecast(req_res));
 }
