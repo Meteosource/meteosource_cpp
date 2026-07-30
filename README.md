@@ -125,6 +125,15 @@ The library uses parameter values and variable names with the same convention as
 The library uses empty string as default value for `std::string` variables, `NAN` for `double` variables and `-9999` for `int` variable (only `icon` variable).
 
 
+## Tests
+
+The unit tests parse sample API responses from `tests/data` and need no API key or network access. They are built automatically as the `test_meteosource` target and run with:
+
+```bash
+ctest --test-dir build --output-on-failure
+```
+
+
 ## Contact us
 
 You can contact us [here](https://www.meteosource.com/contact).

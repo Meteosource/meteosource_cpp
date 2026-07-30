@@ -263,13 +263,17 @@ struct AirQualityData
 
     std::string date = "";
     double air_quality = NAN;
+    double aerosol_550 = NAN;
     double pm10 = NAN;
     double pm25 = NAN;
+    double no_surface = NAN;
     double no2_surface = NAN;
     double ozone_surface = NAN;
+    double ozone_total = NAN;
     double co_surface = NAN;
     double so2_surface = NAN;
     double dust_550nm = NAN;
+    double dust_mixing_ratio_05 = NAN;
 };
 
 

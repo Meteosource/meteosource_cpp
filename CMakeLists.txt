@@ -52,3 +52,8 @@ endif()
 
 add_executable(example example.cpp)
 target_link_libraries(example PRIVATE meteosource)
+
+enable_testing()
+add_executable(test_meteosource tests/test_main.cpp)
+target_link_libraries(test_meteosource PRIVATE meteosource)
+add_test(NAME parsing COMMAND test_meteosource ${CMAKE_CURRENT_SOURCE_DIR}/tests/data)

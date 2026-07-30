@@ -544,13 +544,17 @@ AirQualityData::AirQualityData(const Json::Value & data)
 {
     this->date = data.get("date", "").asString();
     this->air_quality = data.get("air_quality", NAN).asDouble();
+    this->aerosol_550 = data.get("aerosol_550", NAN).asDouble();
     this->pm10 = data.get("pm10", NAN).asDouble();
     this->pm25 = data.get("pm25", NAN).asDouble();
+    this->no_surface = data.get("no_surface", NAN).asDouble();
     this->no2_surface = data.get("no2_surface", NAN).asDouble();
     this->ozone_surface = data.get("ozone_surface", NAN).asDouble();
+    this->ozone_total = data.get("ozone_total", NAN).asDouble();
     this->co_surface = data.get("co_surface", NAN).asDouble();
     this->so2_surface = data.get("so2_surface", NAN).asDouble();
     this->dust_550nm = data.get("dust_550nm", NAN).asDouble();
+    this->dust_mixing_ratio_05 = data.get("dust_mixing_ratio_05", NAN).asDouble();
 }
 
 std::ostream & operator<<(std::ostream &os, const AirQualityData & d)
@@ -562,13 +566,17 @@ void AirQualityData::print()
 {
     std::cout << "date: " << this->date << std::endl;
     std::cout << "air_quality: " << this->air_quality << std::endl;
+    std::cout << "aerosol_550: " << this->aerosol_550 << std::endl;
     std::cout << "pm10: " << this->pm10 << std::endl;
     std::cout << "pm25: " << this->pm25 << std::endl;
+    std::cout << "no_surface: " << this->no_surface << std::endl;
     std::cout << "no2_surface: " << this->no2_surface << std::endl;
     std::cout << "ozone_surface: " << this->ozone_surface << std::endl;
+    std::cout << "ozone_total: " << this->ozone_total << std::endl;
     std::cout << "co_surface: " << this->co_surface << std::endl;
     std::cout << "so2_surface: " << this->so2_surface << std::endl;
     std::cout << "dust_550nm: " << this->dust_550nm << std::endl;
+    std::cout << "dust_mixing_ratio_05: " << this->dust_mixing_ratio_05 << std::endl;
 }
 
 
