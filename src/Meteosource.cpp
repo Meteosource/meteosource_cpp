@@ -2,6 +2,8 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <iomanip>
+#include <cctype>
 #include <json/json.h>
 
 #include "Meteosource.h"
@@ -88,4 +90,118 @@ std::unique_ptr<Forecast> Meteosource::get_point_forecast(const double lat,
         return nullptr;
     }
     return std::unique_ptr<Forecast>(new Forecast(req_res));
+}
+
+std::string Meteosource::url_encode(const std::string & value)
+{
+    std::ostringstream escaped;
+    escaped.fill('0');
+    escaped << std::hex << std::uppercase;
+    for (std::string::size_type i = 0; i < value.size(); ++i)
+    {
+        unsigned char c = value[i];
+        if (isalnum(c) || c == '-' || c == '_' || c == '.' || c == '~')
+        {
+            escaped << c;
+        }
+        else
+        {
+            escaped << '%' << std::setw(2) << int(c);
+        }
+    }
+    return escaped.str();
+}
+
+std::unique_ptr<AirQuality> Meteosource::get_air_quality(const std::string place_id,
+                                                         const std::string timezone,
+                                                         const std::string language)
+{
+    std::stringstream ss;
+    ss << this->m_host << "/v1/" << this->m_tier << "/air_quality"
+       << "?place_id=" << place_id
+       << "&timezone=" << timezone
+       << "&language=" << language
+       << "&key=" << this->m_api_key;
+    Json::Value req_res = this->m_request_handler->execute_request(ss.str());
+    if (!req_res)
+    {
+        return nullptr;
+    }
+    return std::unique_ptr<AirQuality>(new AirQuality(req_res));
+}
+
+std::unique_ptr<AirQuality> Meteosource::get_air_quality(const double lat,
+                                                         const double lon,
+                                                         const std::string timezone,
+                                                         const std::string language)
+{
+    std::stringstream ss;
+    ss << this->m_host << "/v1/" << this->m_tier << "/air_quality"
+       << "?lat=" << lat
+       << "&lon=" << lon
+       << "&timezone=" << timezone
+       << "&language=" << language
+       << "&key=" << this->m_api_key;
+    Json::Value req_res = this->m_request_handler->execute_request(ss.str());
+    if (!req_res)
+    {
+        return nullptr;
+    }
+    return std::unique_ptr<AirQuality>(new AirQuality(req_res));
+}
+
+std::unique_ptr<Place> Meteosource::get_nearest_place(const double lat,
+                                                      const double lon,
+                                                      const std::string language)
+{
+    std::stringstream ss;
+    ss << this->m_host << "/v1/" << this->m_tier << "/nearest_place"
+       << "?lat=" << lat
+       << "&lon=" << lon
+       << "&language=" << language
+       << "&key=" << this->m_api_key;
+    Json::Value req_res = this->m_request_handler->execute_request(ss.str());
+    if (!req_res)
+    {
+        return nullptr;
+    }
+    return std::unique_ptr<Place>(new Place(req_res));
+}
+
+std::vector<Place> Meteosource::find_places(const std::string text,
+                                            const std::string language)
+{
+    std::stringstream ss;
+    ss << this->m_host << "/v1/" << this->m_tier << "/find_places"
+       << "?text=" << this->url_encode(text)
+       << "&language=" << language
+       << "&key=" << this->m_api_key;
+    return this->get_places(ss.str());
+}
+
+std::vector<Place> Meteosource::find_places_prefix(const std::string text,
+                                                   const std::string language)
+{
+    std::stringstream ss;
+    ss << this->m_host << "/v1/" << this->m_tier << "/find_places_prefix"
+       << "?text=" << this->url_encode(text)
+       << "&language=" << language
+       << "&key=" << this->m_api_key;
+    return this->get_places(ss.str());
+}
+
+std::vector<Place> Meteosource::get_places(const std::string url)
+{
+    std::vector<Place> res;
+    Json::Value req_res = this->m_request_handler->execute_request(url);
+    if (!req_res)
+    {
+        return res;
+    }
+    res.reserve(req_res.size());
+    for (Json::ArrayIndex i = 0; i < req_res.size(); ++i)
+    {
+        res.push_back(Place(req_res[i]));
+    }
+    return res;
 }

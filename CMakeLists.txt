@@ -35,6 +35,7 @@ else()
 endif()
 
 add_library(meteosource STATIC
+    src/AirQuality.cpp
     src/Data.cpp
     src/Forecast.cpp
     src/Meteosource.cpp

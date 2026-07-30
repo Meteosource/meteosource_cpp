@@ -5,6 +5,7 @@
 #include <memory>
 
 #include "Data.h"
+#include "Forecast.h"
 
 
 CurrentData::CurrentData(const Json::Value & data)
@@ -536,4 +537,68 @@ void Alert::print()
     std::cout << "severity: " << this->severity << std::endl;
     std::cout << "headline: " << this->headline << std::endl;
     std::cout << "description: " << this->description << std::endl;
+}
+
+
+AirQualityData::AirQualityData(const Json::Value & data)
+{
+    this->date = data.get("date", "").asString();
+    this->air_quality = data.get("air_quality", NAN).asDouble();
+    this->pm10 = data.get("pm10", NAN).asDouble();
+    this->pm25 = data.get("pm25", NAN).asDouble();
+    this->no2_surface = data.get("no2_surface", NAN).asDouble();
+    this->ozone_surface = data.get("ozone_surface", NAN).asDouble();
+    this->co_surface = data.get("co_surface", NAN).asDouble();
+    this->so2_surface = data.get("so2_surface", NAN).asDouble();
+    this->dust_550nm = data.get("dust_550nm", NAN).asDouble();
+}
+
+std::ostream & operator<<(std::ostream &os, const AirQualityData & d)
+{
+    return os << "<Air quality data for " << d.date << ">";
+}
+
+void AirQualityData::print()
+{
+    std::cout << "date: " << this->date << std::endl;
+    std::cout << "air_quality: " << this->air_quality << std::endl;
+    std::cout << "pm10: " << this->pm10 << std::endl;
+    std::cout << "pm25: " << this->pm25 << std::endl;
+    std::cout << "no2_surface: " << this->no2_surface << std::endl;
+    std::cout << "ozone_surface: " << this->ozone_surface << std::endl;
+    std::cout << "co_surface: " << this->co_surface << std::endl;
+    std::cout << "so2_surface: " << this->so2_surface << std::endl;
+    std::cout << "dust_550nm: " << this->dust_550nm << std::endl;
+}
+
+
+Place::Place(const Json::Value & data)
+{
+    this->name = data.get("name", "").asString();
+    this->place_id = data.get("place_id", "").asString();
+    this->adm_area1 = data.get("adm_area1", "").asString();
+    this->adm_area2 = data.get("adm_area2", "").asString();
+    this->country = data.get("country", "").asString();
+    this->lat = Forecast::parse_lat_lon(data.get("lat", "").asString());
+    this->lon = Forecast::parse_lat_lon(data.get("lon", "").asString());
+    this->timezone = data.get("timezone", "").asString();
+    this->type = data.get("type", "").asString();
+}
+
+std::ostream & operator<<(std::ostream &os, const Place & p)
+{
+    return os << "<Place " << p.name << " (" << p.place_id << "), " << p.country << ">";
+}
+
+void Place::print()
+{
+    std::cout << "name: " << this->name << std::endl;
+    std::cout << "place_id: " << this->place_id << std::endl;
+    std::cout << "adm_area1: " << this->adm_area1 << std::endl;
+    std::cout << "adm_area2: " << this->adm_area2 << std::endl;
+    std::cout << "country: " << this->country << std::endl;
+    std::cout << "lat: " << this->lat << std::endl;
+    std::cout << "lon: " << this->lon << std::endl;
+    std::cout << "timezone: " << this->timezone << std::endl;
+    std::cout << "type: " << this->type << std::endl;
 }

@@ -2,10 +2,13 @@
 #define METEOSOURCE_H
 
 #include <string>
+#include <vector>
 #include <json/json.h>
 
 #include "RequestHandler.h"
 #include "Forecast.h"
+#include "AirQuality.h"
+#include "Data.h"
 
 
 class Meteosource
@@ -28,6 +31,25 @@ class Meteosource
                                                      const std::string language="en",
                                                      const std::string units="auto");
 
+        std::unique_ptr<AirQuality> get_air_quality(const std::string place_id,
+                                                    const std::string timezone="UTC",
+                                                    const std::string language="en");
+
+        std::unique_ptr<AirQuality> get_air_quality(const double lat,
+                                                    const double lon,
+                                                    const std::string timezone="UTC",
+                                                    const std::string language="en");
+
+        std::unique_ptr<Place> get_nearest_place(const double lat,
+                                                 const double lon,
+                                                 const std::string language="en");
+
+        std::vector<Place> find_places(const std::string text,
+                                       const std::string language="en");
+
+        std::vector<Place> find_places_prefix(const std::string text,
+                                              const std::string language="en");
+
     private:
         std::string build_url_common(const std::string sections,
                                      const std::string timezone,
@@ -48,6 +70,10 @@ class Meteosource
                               const std::string timezone,
                               const std::string language,
                               const std::string units);
+
+        std::string url_encode(const std::string & value);
+
+        std::vector<Place> get_places(const std::string url);
 
         std::unique_ptr<RequestHandler> m_request_handler;
         std::string m_api_key;

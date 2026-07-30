@@ -80,6 +80,44 @@ auto forecast = m.get_point_forecast(51.50853, -0.12574, "current,hourly", "UTC"
 
 Both variants return a `std::unique_ptr<Forecast>`, or `nullptr` if the request fails.
 
+### Air quality
+
+To get air pollution data for a place, use `get_air_quality`. Like the point forecast, it accepts either a place identifier or coordinates:
+
+```cpp
+auto air_quality = m.get_air_quality("london", "UTC", "en");
+auto air_quality2 = m.get_air_quality(51.50853, -0.12574, "UTC", "en");
+
+if (air_quality)
+{
+    for (unsigned int i = 0; i < air_quality->data.size(); ++i)
+        std::cout << air_quality->data[i]->date << ": PM10 " << air_quality->data[i]->pm10 << std::endl;
+}
+```
+
+It returns a `std::unique_ptr<AirQuality>` with hourly `AirQualityData` timesteps, or `nullptr` if the request fails. Note that air quality data are not available in the free tier.
+
+### Finding places
+
+To search for places by name (or ZIP code), use `find_places`. For autocomplete there is `find_places_prefix`, which matches the beginning of the words. To get the nearest named place for GPS coordinates, use `get_nearest_place`:
+
+```cpp
+// Search for places by name, returns std::vector<Place>
+auto places = m.find_places("london", "en");
+
+// Prefix search, useful for autocomplete
+auto suggestions = m.find_places_prefix("lond", "en");
+
+// Nearest named place for coordinates, returns std::unique_ptr<Place>
+auto place = m.get_nearest_place(51.50853, -0.12574, "en");
+if (place)
+{
+    std::cout << place->name << " (" << place->place_id << "), " << place->timezone << std::endl;
+}
+```
+
+The `Place` struct contains `name`, `place_id`, `adm_area1`, `adm_area2`, `country`, `lat`, `lon`, `timezone` and `type`.
+
 ### Usage notes
 
 The library uses parameter values and variable names with the same convention as the API itself. One exception are nested variables, such as `wind.speed` in the API. This library uses `_` to separate the levels, so `wind.speed` becomes `wind_speed`. You can see the available variable names for the individual sections in `src/Data.h` file.

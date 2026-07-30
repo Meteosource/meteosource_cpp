@@ -255,4 +255,40 @@ struct Alert
 };
 
 
+struct AirQualityData
+{
+    AirQualityData(const Json::Value & data);
+    friend std::ostream & operator << (std::ostream & stream, const AirQualityData & d);
+    void print();
+
+    std::string date = "";
+    double air_quality = NAN;
+    double pm10 = NAN;
+    double pm25 = NAN;
+    double no2_surface = NAN;
+    double ozone_surface = NAN;
+    double co_surface = NAN;
+    double so2_surface = NAN;
+    double dust_550nm = NAN;
+};
+
+
+struct Place
+{
+    Place(const Json::Value & data);
+    friend std::ostream & operator << (std::ostream & stream, const Place & p);
+    void print();
+
+    std::string name = "";
+    std::string place_id = "";
+    std::string adm_area1 = "";
+    std::string adm_area2 = "";
+    std::string country = "";
+    double lat = NAN;
+    double lon = NAN;
+    std::string timezone = "";
+    std::string type = "";
+};
+
+
 #endif //DATA_H
