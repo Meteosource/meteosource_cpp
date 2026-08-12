@@ -85,8 +85,8 @@ Both variants return a `std::unique_ptr<Forecast>`, or `nullptr` if the request 
 To get air pollution data for a place, use `get_air_quality`. Like the point forecast, it accepts either a place identifier or coordinates:
 
 ```cpp
-auto air_quality = m.get_air_quality("london", "UTC", "en");
-auto air_quality2 = m.get_air_quality(51.50853, -0.12574, "UTC", "en");
+auto air_quality = m.get_air_quality("london", "UTC");
+auto air_quality2 = m.get_air_quality(51.50853, -0.12574, "UTC");
 
 if (air_quality)
 {

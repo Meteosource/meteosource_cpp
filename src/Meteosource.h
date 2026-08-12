@@ -31,14 +31,14 @@ class Meteosource
                                                      const std::string language="en",
                                                      const std::string units="auto");
 
+        // Note: the air_quality endpoint does not accept a language
+        // parameter (its data is numeric only), unlike the other endpoints.
         std::unique_ptr<AirQuality> get_air_quality(const std::string place_id,
-                                                    const std::string timezone="UTC",
-                                                    const std::string language="en");
+                                                    const std::string timezone="UTC");
 
         std::unique_ptr<AirQuality> get_air_quality(const double lat,
                                                     const double lon,
-                                                    const std::string timezone="UTC",
-                                                    const std::string language="en");
+                                                    const std::string timezone="UTC");
 
         std::unique_ptr<Place> get_nearest_place(const double lat,
                                                  const double lon,

@@ -113,14 +113,12 @@ std::string Meteosource::url_encode(const std::string & value)
 }
 
 std::unique_ptr<AirQuality> Meteosource::get_air_quality(const std::string place_id,
-                                                         const std::string timezone,
-                                                         const std::string language)
+                                                         const std::string timezone)
 {
     std::stringstream ss;
     ss << this->m_host << "/v1/" << this->m_tier << "/air_quality"
        << "?place_id=" << place_id
        << "&timezone=" << timezone
-       << "&language=" << language
        << "&key=" << this->m_api_key;
     Json::Value req_res = this->m_request_handler->execute_request(ss.str());
     if (!req_res)
@@ -132,15 +130,13 @@ std::unique_ptr<AirQuality> Meteosource::get_air_quality(const std::string place
 
 std::unique_ptr<AirQuality> Meteosource::get_air_quality(const double lat,
                                                          const double lon,
-                                                         const std::string timezone,
-                                                         const std::string language)
+                                                         const std::string timezone)
 {
     std::stringstream ss;
     ss << this->m_host << "/v1/" << this->m_tier << "/air_quality"
        << "?lat=" << lat
        << "&lon=" << lon
        << "&timezone=" << timezone
-       << "&language=" << language
        << "&key=" << this->m_api_key;
     Json::Value req_res = this->m_request_handler->execute_request(ss.str());
     if (!req_res)

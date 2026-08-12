@@ -78,7 +78,7 @@ int main()
     }
 
     // Air quality data (not available in the free tier)
-    auto air_quality = m.get_air_quality(place_id, timezone, language);
+    auto air_quality = m.get_air_quality(place_id, timezone);
     if (air_quality && air_quality->data.size() > 0)
     {
         std::cout << "Air quality for next 5 hours:" << std::endl;
