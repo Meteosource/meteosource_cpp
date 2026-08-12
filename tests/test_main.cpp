@@ -9,6 +9,7 @@
 
 #include "Forecast.h"
 #include "AirQuality.h"
+#include "TimeMachine.h"
 #include "Data.h"
 
 
@@ -180,6 +181,42 @@ static void test_find_places(const std::string & data_dir)
     CHECK(places[1].place_id == "london-6058560");
 }
 
+static void test_time_machine(const std::string & data_dir)
+{
+    Json::Value data = load_json(data_dir + "/time_machine.json");
+    TimeMachine tm(data);
+
+    CHECK(almost_equal(tm.lat, 50.08804));
+    CHECK(almost_equal(tm.lon, 14.42076));
+    CHECK(tm.elevation == "202");
+    CHECK(tm.units == "metric");
+
+    CHECK(tm.data.size() == 24);
+    CHECK(tm.data[0]->date == "2020-10-01T00:00:00");
+    CHECK(tm.data[0]->weather == "partly_sunny");
+    CHECK(almost_equal(tm.data[0]->temperature, 7.9));
+    CHECK(almost_equal(tm.data[0]->soil_temperature, 9.5));
+    CHECK(almost_equal(tm.data[0]->wind_angle, 291.0));
+    CHECK(tm.data[0]->wind_dir == "WNW");
+    CHECK(almost_equal(tm.data[0]->cloud_cover_total, 34.0));
+
+    CHECK(tm.data[23]->date == "2020-10-01T23:00:00");
+    CHECK(almost_equal(tm.data[23]->temperature, 8.6));
+
+    CHECK(almost_equal(tm.daily->temperature, 15.5));
+    CHECK(almost_equal(tm.daily->temperature_min, 10.0));
+    CHECK(almost_equal(tm.daily->temperature_max, 18.25));
+    CHECK(almost_equal(tm.daily->humidity, 68.75));
+
+    CHECK(almost_equal(tm.statistics->temperature_avg, 13.0));
+    CHECK(almost_equal(tm.statistics->temperature_avg_min, 8.5));
+    CHECK(almost_equal(tm.statistics->temperature_avg_max, 17.5));
+    CHECK(almost_equal(tm.statistics->temperature_record_min, 2.0));
+    CHECK(almost_equal(tm.statistics->temperature_record_max, 25.2));
+    CHECK(tm.statistics->wind_avg_dir == "S");
+    CHECK(almost_equal(tm.statistics->precipitation_probability, 31.0));
+}
+
 int main(int argc, char ** argv)
 {
     if (argc != 2)
@@ -197,6 +234,7 @@ int main(int argc, char ** argv)
         test_air_quality(data_dir);
         test_nearest_place(data_dir);
         test_find_places(data_dir);
+        test_time_machine(data_dir);
     }
     catch (const std::exception & ex)
     {

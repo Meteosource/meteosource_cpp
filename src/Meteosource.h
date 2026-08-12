@@ -8,6 +8,7 @@
 #include "RequestHandler.h"
 #include "Forecast.h"
 #include "AirQuality.h"
+#include "TimeMachine.h"
 #include "Data.h"
 
 
@@ -39,6 +40,21 @@ class Meteosource
         std::unique_ptr<AirQuality> get_air_quality(const double lat,
                                                     const double lon,
                                                     const std::string timezone="UTC");
+
+        // Note: time_machine data is not available in the free tier. Unlike
+        // pymeteosource, this takes a single date (format "YYYY-MM-DD")
+        // rather than supporting date ranges, matching the simpler API used
+        // by the Kotlin and Swift libraries.
+        std::unique_ptr<TimeMachine> get_time_machine(const std::string place_id,
+                                                      const std::string date,
+                                                      const std::string timezone="UTC",
+                                                      const std::string units="auto");
+
+        std::unique_ptr<TimeMachine> get_time_machine(const double lat,
+                                                      const double lon,
+                                                      const std::string date,
+                                                      const std::string timezone="UTC",
+                                                      const std::string units="auto");
 
         std::unique_ptr<Place> get_nearest_place(const double lat,
                                                  const double lon,
@@ -74,6 +90,8 @@ class Meteosource
         std::string url_encode(const std::string & value);
 
         std::vector<Place> get_places(const std::string url);
+
+        void validate_date(const std::string & date);
 
         std::unique_ptr<RequestHandler> m_request_handler;
         std::string m_api_key;

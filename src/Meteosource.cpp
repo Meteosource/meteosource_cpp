@@ -4,6 +4,7 @@
 #include <sstream>
 #include <iomanip>
 #include <cctype>
+#include <stdexcept>
 #include <json/json.h>
 
 #include "Meteosource.h"
@@ -144,6 +145,70 @@ std::unique_ptr<AirQuality> Meteosource::get_air_quality(const double lat,
         return nullptr;
     }
     return std::unique_ptr<AirQuality>(new AirQuality(req_res));
+}
+
+void Meteosource::validate_date(const std::string & date)
+{
+    bool valid = date.size() == 10 && date[4] == '-' && date[7] == '-';
+    for (std::string::size_type i = 0; valid && i < date.size(); ++i)
+    {
+        if (i == 4 || i == 7)
+        {
+            continue;
+        }
+        if (!isdigit(static_cast<unsigned char>(date[i])))
+        {
+            valid = false;
+        }
+    }
+    if (!valid)
+    {
+        throw std::invalid_argument("date must be in \"YYYY-MM-DD\" format, got \"" + date + "\"");
+    }
+}
+
+std::unique_ptr<TimeMachine> Meteosource::get_time_machine(const std::string place_id,
+                                                           const std::string date,
+                                                           const std::string timezone,
+                                                           const std::string units)
+{
+    this->validate_date(date);
+    std::stringstream ss;
+    ss << this->m_host << "/v1/" << this->m_tier << "/time_machine"
+       << "?place_id=" << place_id
+       << "&date=" << date
+       << "&timezone=" << timezone
+       << "&units=" << units
+       << "&key=" << this->m_api_key;
+    Json::Value req_res = this->m_request_handler->execute_request(ss.str());
+    if (!req_res)
+    {
+        return nullptr;
+    }
+    return std::unique_ptr<TimeMachine>(new TimeMachine(req_res));
+}
+
+std::unique_ptr<TimeMachine> Meteosource::get_time_machine(const double lat,
+                                                           const double lon,
+                                                           const std::string date,
+                                                           const std::string timezone,
+                                                           const std::string units)
+{
+    this->validate_date(date);
+    std::stringstream ss;
+    ss << this->m_host << "/v1/" << this->m_tier << "/time_machine"
+       << "?lat=" << lat
+       << "&lon=" << lon
+       << "&date=" << date
+       << "&timezone=" << timezone
+       << "&units=" << units
+       << "&key=" << this->m_api_key;
+    Json::Value req_res = this->m_request_handler->execute_request(ss.str());
+    if (!req_res)
+    {
+        return nullptr;
+    }
+    return std::unique_ptr<TimeMachine>(new TimeMachine(req_res));
 }
 
 std::unique_ptr<Place> Meteosource::get_nearest_place(const double lat,

@@ -87,5 +87,15 @@ int main()
         std::cout << std::endl;
     }
 
+    // Historical weather data (not available in the free tier)
+    auto time_machine = m.get_time_machine(place_id, "2024-01-01", timezone, units);
+    if (time_machine && time_machine->data.size() > 0)
+    {
+        std::cout << "Historical weather for 2024-01-01, first 5 hours:" << std::endl;
+        for (int i = 0; i < 5; ++i)
+            std::cout << "  " << time_machine->data[i]->date << ": temperature " << time_machine->data[i]->temperature << std::endl;
+        std::cout << std::endl;
+    }
+
     return 0;
 }

@@ -97,6 +97,24 @@ if (air_quality)
 
 It returns a `std::unique_ptr<AirQuality>` with hourly `AirQualityData` timesteps, or `nullptr` if the request fails. Note that air quality data are not available in the free tier.
 
+### Historical weather data
+
+To get archive weather data for a place and date, use `get_time_machine`. Like the point forecast, it accepts either a place identifier or coordinates, plus a date in `"YYYY-MM-DD"` format:
+
+```cpp
+auto time_machine = m.get_time_machine("london", "2024-01-01", "UTC", "auto");
+
+if (time_machine)
+{
+    for (unsigned int i = 0; i < time_machine->data.size(); ++i)
+        std::cout << time_machine->data[i]->date << ": temperature " << time_machine->data[i]->temperature << std::endl;
+}
+```
+
+It returns a `std::unique_ptr<TimeMachine>` with hourly `HourlyData` timesteps for the requested day, plus `daily` (`AllDayData`) and `statistics` (`StatisticsData`) summaries, or `nullptr` if the request fails. An invalid date throws `std::invalid_argument`. Note that historical data is not available in the free tier.
+
+Unlike pymeteosource, this method takes a single date rather than a date range.
+
 ### Finding places
 
 To search for places by name (or ZIP code), use `find_places`. For autocomplete there is `find_places_prefix`, which matches the beginning of the words. To get the nearest named place for GPS coordinates, use `get_nearest_place`:

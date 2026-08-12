@@ -40,6 +40,7 @@ add_library(meteosource STATIC
     src/Forecast.cpp
     src/Meteosource.cpp
     src/RequestHandler.cpp
+    src/TimeMachine.cpp
 )
 target_include_directories(meteosource PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 target_link_libraries(meteosource PUBLIC CURL::libcurl ${METEOSOURCE_JSONCPP_TARGET})
