@@ -1,0 +1,57 @@
+[
+    {
+        "name": "London",
+        "place_id": "london",
+        "adm_area1": "England",
+        "adm_area2": "Greater London",
+        "country": "United Kingdom",
+        "lat": "51.50853N",
+        "lon": "0.12574W",
+        "timezone": "Europe/London",
+        "type": "settlement"
+    },
+    {
+        "name": "London",
+        "place_id": "london-6058560",
+        "adm_area1": "Ontario",
+        "adm_area2": null,
+        "country": "Canada",
+        "lat": "42.98339N",
+        "lon": "81.23304W",
+        "timezone": "America/Toronto",
+        "type": "settlement"
+    },
+    {
+        "name": "London",
+        "place_id": "london-4298960",
+        "adm_area1": "Kentucky",
+        "adm_area2": "Laurel",
+        "country": "United States of America",
+        "lat": "37.12898N",
+        "lon": "84.08326W",
+        "timezone": "America/New_York",
+        "type": "settlement"
+    },
+    {
+        "name": "City of London",
+        "place_id": "city-of-london",
+        "adm_area1": "England",
+        "adm_area2": "Greater London",
+        "country": "United Kingdom",
+        "lat": "51.51279N",
+        "lon": "0.09184W",
+        "timezone": "Europe/London",
+        "type": "settlement"
+    },
+    {
+        "name": "London",
+        "place_id": "london-4517009",
+        "adm_area1": "Ohio",
+        "adm_area2": "Madison",
+        "country": "United States of America",
+        "lat": "39.88645N",
+        "lon": "83.44825W",
+        "timezone": "America/New_York",
+        "type": "settlement"
+    }
+]

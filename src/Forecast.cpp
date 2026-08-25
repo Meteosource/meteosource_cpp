@@ -8,11 +8,11 @@
 double Forecast::parse_lat_lon(const std::string & lat_lon)
 {
     double res = stod(lat_lon.substr(0, lat_lon.size() - 1));
-    if (lat_lon.back() == 'N' or lat_lon.back() == 'E')
+    if (lat_lon.back() == 'N' || lat_lon.back() == 'E')
     {
         return res;
     }
-    else if (lat_lon.back() == 'S' or lat_lon.back() =='W')
+    else if (lat_lon.back() == 'S' || lat_lon.back() == 'W')
     {
         return -1 * res;
     }
@@ -43,9 +43,9 @@ Forecast::Forecast(Json::Value & data)
     {
         if (data["hourly"].isMember("data"))
         {
-            size_t sz = data["hourly"]["data"].size();
+            Json::ArrayIndex sz = data["hourly"]["data"].size();
             this->hourly.reserve(sz);
-            for (int i = 0; i < sz; ++i)
+            for (Json::ArrayIndex i = 0; i < sz; ++i)
             {
                 this->hourly.push_back(std::unique_ptr<HourlyData>(new HourlyData(data["hourly"]["data"][i])));
             }
@@ -55,9 +55,9 @@ Forecast::Forecast(Json::Value & data)
     {
         if (data["daily"].isMember("data"))
         {
-            size_t sz = data["daily"]["data"].size();
+            Json::ArrayIndex sz = data["daily"]["data"].size();
             this->daily.reserve(sz);
-            for (int i = 0; i < sz; ++i)
+            for (Json::ArrayIndex i = 0; i < sz; ++i)
             {
                 this->daily.push_back(std::unique_ptr<DailyData>(new DailyData(data["daily"]["data"][i])));
             }
@@ -67,9 +67,9 @@ Forecast::Forecast(Json::Value & data)
     {
         if (data["alerts"].isMember("data"))
         {
-            size_t sz = data["alerts"]["data"].size();
+            Json::ArrayIndex sz = data["alerts"]["data"].size();
             this->alerts.reserve(sz);
-            for (int i = 0; i < sz; ++i)
+            for (Json::ArrayIndex i = 0; i < sz; ++i)
             {
                 this->alerts.push_back(std::unique_ptr<Alert>(new Alert(data["alerts"]["data"][i])));
             }

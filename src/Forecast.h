@@ -2,7 +2,7 @@
 #define FORECAST_H
 
 #include <memory>
-#include <jsoncpp/json/json.h>
+#include <json/json.h>
 #include "Data.h"
 
 class Forecast
@@ -13,7 +13,7 @@ class Forecast
         friend std::ostream & operator << (std::ostream & stream,
                                            const Forecast & f);
 
-        double parse_lat_lon(const std::string & lat_lon);
+        static double parse_lat_lon(const std::string & lat_lon);
         double lat;
         double lon;
         std::string elevation;

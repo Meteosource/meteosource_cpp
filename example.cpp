@@ -1,5 +1,5 @@
 #include <iostream>
-#include <jsoncpp/json/json.h>
+#include <json/json.h>
 #include <memory>
 
 #include "src/Meteosource.h"
@@ -58,6 +58,42 @@ int main()
         std::cout << "Active alerts:" << std::endl;
         for (unsigned int i = 0; i < res->alerts.size(); ++i)
             std::cout << "  Alert valid from " << res->alerts[i]->onset << " to " << res->alerts[i]->expires << ": " << res->alerts[i]->event << std::endl;
+        std::cout << std::endl;
+    }
+
+    // Search for places by name and get the nearest place for coordinates
+    auto places = m.find_places("london", language);
+    if (places.size() > 0)
+    {
+        std::cout << "Places found for 'london':" << std::endl;
+        for (unsigned int i = 0; i < places.size(); ++i)
+            std::cout << "  " << places[i] << std::endl;
+        std::cout << std::endl;
+    }
+
+    auto nearest = m.get_nearest_place(51.50853, -0.12574, language);
+    if (nearest)
+    {
+        std::cout << "Nearest place: " << *nearest << std::endl << std::endl;
+    }
+
+    // Air quality data (not available in the free tier)
+    auto air_quality = m.get_air_quality(place_id, timezone);
+    if (air_quality && air_quality->data.size() > 0)
+    {
+        std::cout << "Air quality for next 5 hours:" << std::endl;
+        for (int i = 0; i < 5; ++i)
+            std::cout << "  " << air_quality->data[i]->date << ": AQI " << air_quality->data[i]->air_quality << ", PM10 " << air_quality->data[i]->pm10 << std::endl;
+        std::cout << std::endl;
+    }
+
+    // Historical weather data (not available in the free tier)
+    auto time_machine = m.get_time_machine(place_id, "2024-01-01", timezone, units);
+    if (time_machine && time_machine->data.size() > 0)
+    {
+        std::cout << "Historical weather for 2024-01-01, first 5 hours:" << std::endl;
+        for (int i = 0; i < 5; ++i)
+            std::cout << "  " << time_machine->data[i]->date << ": temperature " << time_machine->data[i]->temperature << std::endl;
         std::cout << std::endl;
     }
 
